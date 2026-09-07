@@ -1,239 +1,575 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mohammad Saad — Full-Stack Developer & AI/ML Engineer</title>
-<meta name="description" content="Mohammad Saad — Full-stack developer and AI/ML engineer. AI chatbots, LLM tools, and full-stack web applications.">
-<link rel="icon" type="image/svg+xml" href="favicon.svg">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mohammad Saad — AI-Powered Software & Full-Stack Developer</title>
+    <meta name="description" content="Mohammad Saad is a full-stack developer and AI/ML engineer building AI-powered web applications, intelligent assistants and business automation systems.">
+    
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Mohammad Saad — AI-Powered Software & Full-Stack Developer">
+    <meta property="og:description" content="Building AI-powered software, intelligent web applications, and workflow automation for real-world problems.">
+    
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-<nav>
-  <div class="nav-inner">
-    <a href="#top" class="nav-logo">saad.dev</a>
-    <button class="nav-toggle" aria-label="Toggle menu" onclick="document.querySelector('.nav-links').classList.toggle('open')">☰</button>
-    <ul class="nav-links">
-      <li><a href="#about">About</a></li>
-      <li><a href="#skills">Skills</a></li>
-      <li><a href="#experience">Experience</a></li>
-      <li><a href="#projects">Projects</a></li>
-      <li><a href="#contact">Contact</a></li>
-    </ul>
-  </div>
-</nav>
+    <div class="bg-grid-pattern" aria-hidden="true"></div>
+    <div class="bg-glow-orb glow-top-left" aria-hidden="true"></div>
+    <div class="bg-glow-orb glow-bottom-right" aria-hidden="true"></div>
+    <div class="cursor-glow" id="cursorGlow" aria-hidden="true"></div>
 
-<header id="top" class="hero">
-  <div class="wrap hero-grid">
-    <div>
-      <div class="eyebrow hero-anim">Available for freelance work</div>
-      <h1 class="hero-anim">Mohammad <em>Saad.</em></h1>
-      <p class="hero-sub hero-anim">Full-stack developer and AI/ML engineer building chatbots, LLM tools, and web applications that ship — not just demos.</p>
-      <div class="hero-meta hero-anim">
-        <span>BSc Computer Science with AI, University of Sussex</span>
-        <span>Best Project Award, PepsiCo Franchise IT Dept.</span>
-      </div>
-      <div class="cta-row hero-anim">
-        <a href="#projects" class="btn btn-primary">View projects →</a>
-        <a href="#contact" class="btn btn-ghost">Get in touch</a>
-      </div>
-    </div>
-
-    <div class="chat-card" id="chatCard">
-      <div class="chat-head">
-        <span class="chat-dot"></span>
-        <span class="chat-title">saad-bot · live example</span>
-      </div>
-      <div class="chat-body" id="chatBody"></div>
-    </div>
-  </div>
-</header>
-
-<section id="about">
-  <div class="wrap about-grid">
-    <div>
-      <div class="section-tag">About</div>
-      <h2 class="section-title">What I do.</h2>
-      <p class="about-lead">I build things across the stack — from responsive front-ends and relational databases to LLM pipelines and API-integrated chatbots. My focus is shipping software that works in production, not just in a demo.</p>
-      <div class="about-blocks">
-        <div class="about-block">
-          <h3>Background</h3>
-          <p>Grew up between Pakistan and the UK, studied Computer Science with Artificial Intelligence at Sussex, and have shipped real tools inside a live business — not just coursework.</p>
+    <header class="header">
+        <div class="container nav-container">
+            <a href="#home" class="nav-logo" aria-label="Home">
+                <span class="logo-accent">MS</span>.dev
+            </a>
+            <button class="nav-toggle" id="navToggle" aria-label="Toggle Navigation" aria-expanded="false">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+            </button>
+            <nav class="nav-menu" id="navMenu">
+                <ul class="nav-list">
+                    <li><a href="#home" class="nav-link">Home</a></li>
+                    <li><a href="#about" class="nav-link">About</a></li>
+                    <li><a href="#what-i-build" class="nav-link">What I Build</a></li>
+                    <li><a href="#experience" class="nav-link">Experience</a></li>
+                    <li><a href="#projects" class="nav-link">Projects</a></li>
+                    <li><a href="#skills" class="nav-link">Skills</a></li>
+                    <li><a href="#contact" class="nav-link nav-btn">Contact</a></li>
+                </ul>
+            </nav>
         </div>
-        <div class="about-block">
-          <h3>Approach</h3>
-          <p>Start with the problem the client actually has, scope tightly, build clean and documented, then iterate. Communication throughout beats a perfect handoff at the end.</p>
+    </header>
+
+    <main id="main-content">
+        <section id="home" class="hero-section">
+            <div class="container hero-grid">
+                <div class="hero-content">
+                    <div class="eyebrow-tag reveal-element">
+                        <span class="dot-indicator"></span> AI • SOFTWARE • AUTOMATION
+                    </div>
+                    <h1 class="hero-title reveal-element">
+                        Building AI-powered software for real-world problems.
+                    </h1>
+                    <p class="hero-subtitle reveal-element">
+                        I am a <strong>Full-Stack Developer & AI/ML Engineer</strong> specialising in AI-powered web applications, intelligent assistants, and business workflow automation that bridge modern machine learning with production web architecture.
+                    </p>
+                    <div class="hero-cta-group reveal-element">
+                        <a href="#projects" class="btn btn-primary">View Projects</a>
+                        <a href="#contact" class="btn btn-secondary">Get in Touch</a>
+                    </div>
+                    <div class="hero-availability reveal-element">
+                        <span class="status-badge">UK-based</span>
+                        <span class="availability-text">Open to software engineering, full-stack development & AI/ML opportunities</span>
+                    </div>
+                </div>
+
+                <div class="hero-demo-container reveal-element">
+                    <div class="demo-window">
+                        <div class="demo-header">
+                            <div class="demo-controls">
+                                <span class="control close"></span>
+                                <span class="control minimize"></span>
+                                <span class="control expand"></span>
+                            </div>
+                            <div class="demo-title">Flagship Preview: AI Lead Assistant</div>
+                            <div class="demo-status"><span class="pulse-green"></span> Live Mock</div>
+                        </div>
+                        <div class="demo-body" id="heroDemoBody">
+                            <div class="chat-message bot">
+                                <div class="avatar">AI</div>
+                                <div class="message-content">
+                                    Hello! I am your AI Assistant. How can I help with your service enquiries today?
+                                </div>
+                            </div>
+                            <div class="chat-message user">
+                                <div class="message-content">
+                                    Hi, I need pricing for a full web automation build.
+                                </div>
+                            </div>
+                            <div class="chat-message bot">
+                                <div class="avatar">AI</div>
+                                <div class="message-content">
+                                    I can certainly assist with that. To get an accurate quote, could you share your estimated budget range?
+                                </div>
+                            </div>
+                        </div>
+                        <div class="demo-footer">
+                            <input type="text" class="demo-input" placeholder="Type a message (Interactive preview)..." id="heroDemoInput" readonly value="Selected Option: Enterprise Tier">
+                            <button class="demo-send" id="heroDemoSendBtn" aria-label="Trigger Demo Step">Send</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="about" class="section">
+            <div class="container">
+                <div class="section-header reveal-element">
+                    <span class="section-tag">BACKGROUND</span>
+                    <h2 class="section-title">About Me</h2>
+                </div>
+                
+                <div class="about-grid">
+                    <div class="about-text reveal-element">
+                        <p class="paragraph-large">
+                            Completed a BSc in Computer Science with Artificial Intelligence at the University of Sussex, graduating with Upper Second-Class Honours (2:1).
+                        </p>
+                        <p>
+                            My experience spans full-stack development, AI/ML, database systems, and interactive web applications, with hands-on experience building and deploying software in professional environments. I focus on bridging complex machine learning capabilities with scalable web interfaces that solve measurable operational challenges.
+                        </p>
+                    </div>
+
+                    <div class="about-highlights reveal-element">
+                        <div class="highlight-card">
+                            <div class="card-icon">🎓</div>
+                            <div class="card-info">
+                                <h3>BSc Computer Science with AI</h3>
+                                <p>University of Sussex</p>
+                                <span class="badge">Upper Second-Class Honours (2:1)</span>
+                            </div>
+                        </div>
+
+                        <div class="highlight-card accent-card">
+                            <div class="card-icon">🏆</div>
+                            <div class="card-info">
+                                <h3>Best Project – IT Department</h3>
+                                <p>Awarded at Sukkur Beverages Pvt Ltd</p>
+                                <span class="badge badge-accent">Recognition for Technical Excellence</span>
+                            </div>
+                        </div>
+
+                        <div class="highlight-card">
+                            <div class="card-icon">⚙️</div>
+                            <div class="card-info">
+                                <h3>AI/ML + Full-Stack</h3>
+                                <p>Real-World Production Experience</p>
+                                <span class="badge">End-to-End System Delivery</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="what-i-build" class="section bg-surface">
+            <div class="container">
+                <div class="section-header reveal-element">
+                    <span class="section-tag">SPECIALISATION</span>
+                    <h2 class="section-title">What I Build</h2>
+                </div>
+
+                <div class="services-grid">
+                    <div class="service-card reveal-element">
+                        <div class="service-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 1 0 10 10H12V2z"/><path d="M12 12L2.1 12a10 10 0 0 1 9.9-10v10z"/><path d="M22 12A10 10 0 0 1 12 22V12h10z"/></svg>
+                        </div>
+                        <h3>AI-Powered Applications</h3>
+                        <p>LLM-powered tools, AI assistants, RAG systems, and intelligent web applications designed around real business use cases and production stability.</p>
+                        <ul class="service-list">
+                            <li>Google Gemini API integrations</li>
+                            <li>Context-aware conversational flows</li>
+                            <li>Prompt engineering pipelines</li>
+                        </ul>
+                    </div>
+
+                    <div class="service-card reveal-element">
+                        <div class="service-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                        </div>
+                        <h3>Business Automation</h3>
+                        <p>Automating repetitive workflows such as lead capture, customer enquiries, follow-ups, and data flow across internal business systems.</p>
+                        <ul class="service-list">
+                            <li>Intent-based lead intake</li>
+                            <li>Automated query categorization</li>
+                            <li>Operational overhead reduction</li>
+                        </ul>
+                    </div>
+
+                    <div class="service-card reveal-element">
+                        <div class="service-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                        </div>
+                        <h3>Full-Stack Systems</h3>
+                        <p>Responsive frontends, backend APIs, optimized databases, administrative dashboards, and internal software tools engineered for reliability.</p>
+                        <ul class="service-list">
+                            <li>RESTful API architectures</li>
+                            <li>Relational database schemas</li>
+                            <li>Interactive web interfaces</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="experience" class="section">
+            <div class="container">
+                <div class="section-header reveal-element">
+                    <span class="section-tag">CAREER HISTORY</span>
+                    <h2 class="section-title">Professional Experience</h2>
+                </div>
+
+                <div class="timeline">
+                    <div class="timeline-item reveal-element">
+                        <div class="timeline-marker"></div>
+                        <div class="timeline-content">
+                            <div class="timeline-header">
+                                <div>
+                                    <h3 class="role-title">Software Developer Intern</h3>
+                                    <h4 class="company-name">Sukkur Beverages Pvt Ltd (PepsiCo Franchise)</h4>
+                                </div>
+                                <div class="timeline-period">Jun 2025 – Sep 2025</div>
+                            </div>
+                            <div class="award-banner">
+                                <span class="award-icon">🏆</span> Awarded <strong>Best Project – IT Department</strong> for technical excellence and business impact.
+                            </div>
+                            <ul class="experience-bullets">
+                                <li>Led end-to-end development of internal web and Android applications, scoping requirements, architecting solutions, and implementing full-stack logic in Python and PHP.</li>
+                                <li>Engineered and optimised relational database schemas in MySQL, managed XAMPP server environments, and maintained system reliability and data integrity across live production workflows.</li>
+                                <li>Integrated an AI-powered chatbot using the Google Gemini API, automating internal query handling and reducing manual support overhead.</li>
+                                <li>Collaborated with cross-functional stakeholders and presented project outcomes directly to senior management.</li>
+                            </ul>
+                            <div class="tech-stack-pills">
+                                <span>Python</span>
+                                <span>PHP</span>
+                                <span>MySQL</span>
+                                <span>Google Gemini API</span>
+                                <span>XAMPP</span>
+                                <span>Android</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item reveal-element">
+                        <div class="timeline-marker"></div>
+                        <div class="timeline-content">
+                            <div class="timeline-header">
+                                <div>
+                                    <h3 class="role-title">Digital Marketing Intern</h3>
+                                    <h4 class="company-name">Daily Chemicals Pvt Ltd</h4>
+                                </div>
+                                <div class="timeline-period">Feb 2021 – Sep 2022</div>
+                            </div>
+                            <ul class="experience-bullets">
+                                <li>Administered structured data pipelines and produced performance reports that directly informed management decisions.</li>
+                                <li>Contributed to digital campaigns, workflow documentation, and process optimisation initiatives across operations.</li>
+                                <li>Developed stakeholder communication, project coordination, and business-requirement translation skills.</li>
+                            </ul>
+                            <div class="tech-stack-pills">
+                                <span>Data Pipelines</span>
+                                <span>Reporting</span>
+                                <span>Process Optimization</span>
+                                <span>Requirements Translation</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="projects" class="section bg-surface">
+            <div class="container">
+                <div class="section-header reveal-element">
+                    <span class="section-tag">PORTFOLIO</span>
+                    <h2 class="section-title">Featured Work</h2>
+                </div>
+
+                <div class="featured-project-card reveal-element">
+                    <div class="featured-badge">FLAGSHIP PROJECT</div>
+                    <div class="featured-grid">
+                        <div class="featured-info">
+                            <span class="project-category">AI & Business Automation</span>
+                            <h3 class="featured-title">AI Lead Assistant for Service Businesses</h3>
+                            <p class="featured-description">
+                                A reusable AI website assistant designed for service businesses to answer customer questions and turn high-intent conversations into structured leads. The system combines a responsive customer-facing website, an interactive AI chat widget, intent-based lead capture, and an admin interface for managing enquiries.
+                            </p>
+                            
+                            <div class="feature-highlights">
+                                <div class="feat-item"><strong>Chat Widget:</strong> AI customer support powered by Google Gemini API</div>
+                                <div class="feat-item"><strong>Lead Capture:</strong> Intent-based collection of Name, Email, Service Needed, and Budget</div>
+                                <div class="feat-item"><strong>Admin Dashboard:</strong> Structured lead and conversation management interface</div>
+                                <div class="feat-item"><strong>Human Hand-off:</strong> Graceful routing fallback when confidence is uncertain</div>
+                                <div class="feat-item"><strong>Customizable:</strong> Easily configurable brand colours and business knowledge details</div>
+                            </div>
+
+                            <div class="tech-stack-pills">
+                                <span>JavaScript</span>
+                                <span>Google Gemini API</span>
+                                <span>Serverless / Vercel API</span>
+                                <span>HTML5 / CSS3</span>
+                                <span>Admin UI</span>
+                            </div>
+
+                            <div class="project-links">
+                                <a href="https://github.com/shsaadu/ai-lead-assistant" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                                    View Live Demo
+                                </a>
+                                <a href="https://github.com/shsaadu/ai-lead-assistant" target="_blank" rel="noopener noreferrer" class="btn btn-secondary btn-sm">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+                                    View Code
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="featured-preview">
+                            <div class="ui-mockup-window">
+                                <div class="mockup-header">
+                                    <span class="mockup-title">Lead Management Dashboard</span>
+                                </div>
+                                <div class="mockup-body">
+                                    <div class="dashboard-stat-row">
+                                        <div class="stat-box">
+                                            <span class="stat-num">14</span>
+                                            <span class="stat-lbl">New Leads</span>
+                                        </div>
+                                        <div class="stat-box">
+                                            <span class="stat-num">98%</span>
+                                            <span class="stat-lbl">Automated</span>
+                                        </div>
+                                    </div>
+                                    <div class="lead-list-mock">
+                                        <div class="lead-row highlighted">
+                                            <div class="lead-name">Alex Johnson</div>
+                                            <div class="lead-service">Web Automation</div>
+                                            <div class="lead-status badge-success">Captured</div>
+                                        </div>
+                                        <div class="lead-row">
+                                            <div class="lead-name">Sarah Smith</div>
+                                            <div class="lead-service">Custom AI Tool</div>
+                                            <div class="lead-status badge-pending">Human Review</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="projects-grid">
+                    <div class="project-card reveal-element">
+                        <div class="project-card-header">
+                            <span class="project-category">AI / Dissertation</span>
+                            <a href="https://github.com/shsaadu" target="_blank" rel="noopener noreferrer" class="github-icon-link" aria-label="GitHub Repository">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+                            </a>
+                        </div>
+                        <h3 class="project-title">Persona-Based AI Argumentation System</h3>
+                        <p class="project-description">
+                            BSc Dissertation project evaluating personality alignment in LLMs using Microsoft Phi-2, Big Five personality archetypes, structured prompt engineering, and automated CSV-based quantitative sentiment analysis.
+                        </p>
+                        <div class="tech-stack-pills">
+                            <span>Microsoft Phi-2</span>
+                            <span>PyTorch</span>
+                            <span>Hugging Face</span>
+                            <span>TextBlob</span>
+                            <span>Python</span>
+                        </div>
+                    </div>
+
+                    <div class="project-card reveal-element">
+                        <div class="project-card-header">
+                            <span class="project-category">3D / Web Graphics</span>
+                            <a href="https://github.com/shsaadu" target="_blank" rel="noopener noreferrer" class="github-icon-link" aria-label="GitHub Repository">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+                            </a>
+                        </div>
+                        <h3 class="project-title">3D Interactive Food Ordering System</h3>
+                        <p class="project-description">
+                            Full-stack browser-based 3D ordering platform utilizing Three.js, custom Blender/GLB assets, dynamic lighting, camera controls, synchronized audio feedback, and MVC separation.
+                        </p>
+                        <div class="tech-stack-pills">
+                            <span>Three.js</span>
+                            <span>Blender / GLB</span>
+                            <span>JavaScript / AJAX</span>
+                            <span>jQuery</span>
+                            <span>HTML5 / CSS3</span>
+                        </div>
+                    </div>
+
+                    <div class="project-card reveal-element">
+                        <div class="project-card-header">
+                            <span class="project-category">Full-Stack / Database</span>
+                            <a href="https://github.com/shsaadu" target="_blank" rel="noopener noreferrer" class="github-icon-link" aria-label="GitHub Repository">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+                            </a>
+                        </div>
+                        <h3 class="project-title">Full-Stack Inventory Management System</h3>
+                        <p class="project-description">
+                            Enterprise operational inventory platform featuring product CRUD tracking, order status workflows, promotion management, outlet reporting, role-based auth, and integrated AI assistant support.
+                        </p>
+                        <div class="tech-stack-pills">
+                            <span>PHP</span>
+                            <span>MySQL</span>
+                            <span>Role-Based Auth</span>
+                            <span>CRUD Workflows</span>
+                            <span>AI Chatbot</span>
+                        </div>
+                    </div>
+
+                    <div class="project-card reveal-element">
+                        <div class="project-card-header">
+                            <span class="project-category">Networking & Systems</span>
+                            <a href="https://github.com/shsaadu" target="_blank" rel="noopener noreferrer" class="github-icon-link" aria-label="GitHub Repository">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+                            </a>
+                        </div>
+                        <h3 class="project-title">Network Security & Socket Programming</h3>
+                        <p class="project-description">
+                            Low-level networking tools and vulnerability diagnostics built with C sockets, implementing DNS resolution, HTTP credential packet capture analysis with Wireshark, Apache configuration, and TCP SYN diagnostics.
+                        </p>
+                        <div class="tech-stack-pills">
+                            <span>C Socket Prog</span>
+                            <span>Wireshark</span>
+                            <span>TCP/IP Diagnostics</span>
+                            <span>Apache</span>
+                            <span>DNS Resolution</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="skills" class="section">
+            <div class="container">
+                <div class="section-header reveal-element">
+                    <span class="section-tag">TECHNICAL CAPABILITIES</span>
+                    <h2 class="section-title">Skills & Expertise</h2>
+                </div>
+
+                <div class="skills-grid">
+                    <div class="skill-category-card reveal-element">
+                        <h3>AI & ML</h3>
+                        <div class="skill-tags">
+                            <span class="skill-tag">PyTorch</span>
+                            <span class="skill-tag">Hugging Face Transformers</span>
+                            <span class="skill-tag">LLMs</span>
+                            <span class="skill-tag">NLP</span>
+                            <span class="skill-tag">Prompt Engineering</span>
+                            <span class="skill-tag">Sentiment Analysis</span>
+                            <span class="skill-tag highlight-tag">Google Gemini API</span>
+                        </div>
+                    </div>
+
+                    <div class="skill-category-card reveal-element">
+                        <h3>Web & Front-End</h3>
+                        <div class="skill-tags">
+                            <span class="skill-tag">HTML5</span>
+                            <span class="skill-tag">CSS3</span>
+                            <span class="skill-tag">JavaScript</span>
+                            <span class="skill-tag">Three.js</span>
+                            <span class="skill-tag">PHP</span>
+                            <span class="skill-tag">AJAX</span>
+                            <span class="skill-tag">jQuery</span>
+                            <span class="skill-tag">Blender / GLB</span>
+                            <span class="skill-tag">Responsive Design</span>
+                        </div>
+                    </div>
+
+                    <div class="skill-category-card reveal-element">
+                        <h3>Backend & Data</h3>
+                        <div class="skill-tags">
+                            <span class="skill-tag">MySQL</span>
+                            <span class="skill-tag">SQL Optimisation</span>
+                            <span class="skill-tag">RESTful APIs</span>
+                            <span class="skill-tag">PHP</span>
+                            <span class="skill-tag">XAMPP</span>
+                        </div>
+                    </div>
+
+                    <div class="skill-category-card reveal-element">
+                        <h3>Languages</h3>
+                        <div class="skill-tags">
+                            <span class="skill-tag highlight-tag">Python</span>
+                            <span class="skill-tag">Java</span>
+                            <span class="skill-tag">C</span>
+                            <span class="skill-tag">JavaScript</span>
+                        </div>
+                    </div>
+
+                    <div class="skill-category-card reveal-element full-width-skill">
+                        <h3>Tools & Platforms</h3>
+                        <div class="skill-tags">
+                            <span class="skill-tag">Git/GitHub</span>
+                            <span class="skill-tag">Linux</span>
+                            <span class="skill-tag">AWS (Foundational)</span>
+                            <span class="skill-tag">VS Code</span>
+                            <span class="skill-tag">Wireshark</span>
+                            <span class="skill-tag">Agile/Scrum</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="section bg-surface">
+            <div class="container">
+                <div class="contact-box reveal-element">
+                    <div class="contact-content">
+                        <span class="section-tag">GET IN TOUCH</span>
+                        <h2 class="contact-heading">Have a repetitive process, customer workflow or business problem that could be improved with software or AI? Let's build something useful.</h2>
+                        <p class="contact-subtext">
+                            Whether you are looking for a full-stack engineer, an AI integration developer, or looking to discuss direct software opportunities, feel free to reach out.
+                        </p>
+                        
+                        <div class="contact-grid">
+                            <a href="mailto:saad.mohammad3002@gmail.com" class="contact-method-card">
+                                <div class="method-icon">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                                </div>
+                                <div class="method-details">
+                                    <span class="method-label">Email</span>
+                                    <span class="method-value">saad.mohammad3002@gmail.com</span>
+                                </div>
+                            </a>
+
+                            <a href="https://wa.me/447774021746" target="_blank" rel="noopener noreferrer" class="contact-method-card">
+                                <div class="method-icon">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                                </div>
+                                <div class="method-details">
+                                    <span class="method-label">WhatsApp</span>
+                                    <span class="method-value">+44 7774021746</span>
+                                </div>
+                            </a>
+
+                            <a href="https://www.linkedin.com/in/mohammad-saad9bab65391" target="_blank" rel="noopener noreferrer" class="contact-method-card">
+                                <div class="method-icon">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+                                </div>
+                                <div class="method-details">
+                                    <span class="method-label">LinkedIn</span>
+                                    <span class="method-value">mohammad-saad9bab65391</span>
+                                </div>
+                            </a>
+
+                            <a href="https://github.com/shsaadu" target="_blank" rel="noopener noreferrer" class="contact-method-card">
+                                <div class="method-icon">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+                                </div>
+                                <div class="method-details">
+                                    <span class="method-label">GitHub</span>
+                                    <span class="method-value">github.com/shsaadu</span>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container footer-content">
+            <p>Mohammad Saad · AI-Powered Software & Full-Stack Development</p>
+            <a href="#home" class="back-to-top" aria-label="Back to Top">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 15l-6-6-6 6"/></svg>
+            </a>
         </div>
-        <div class="about-block">
-          <h3>Now</h3>
-          <p>Freelancing on AI chatbot integrations and full-stack web builds, based in the UK on a Graduate visa, open to remote clients worldwide.</p>
-        </div>
-      </div>
-    </div>
+    </footer>
 
-    <div class="cred-grid">
-      <div class="cred-card"><span class="icon">🎓</span><h4>Education</h4><p>BSc CS with AI, 2:1<br>University of Sussex, 2022–2025</p></div>
-      <div class="cred-card"><span class="icon">🏆</span><h4>Recognition</h4><p>Best Project — IT Dept.<br>Sukkur Beverages (PepsiCo)</p></div>
-      <div class="cred-card"><span class="icon">🤖</span><h4>Focus</h4><p>LLM integration, chatbots,<br>full-stack web apps</p></div>
-      <div class="cred-card"><span class="icon">🌍</span><h4>Availability</h4><p>UK Graduate visa<br>Remote, worldwide clients</p></div>
-    </div>
-  </div>
-</section>
-
-<section id="skills">
-  <div class="wrap">
-    <div class="section-tag">Skills</div>
-    <h2 class="section-title">What I work with.</h2>
-    <div class="skills-grid">
-      <div class="skill-group">
-        <h3>AI &amp; ML</h3>
-        <div class="chip-row">
-          <span class="chip">Google Gemini API</span>
-          <span class="chip">LLM Integration</span>
-          <span class="chip">Prompt Engineering</span>
-          <span class="chip">PyTorch</span>
-          <span class="chip">Hugging Face Transformers</span>
-          <span class="chip">NLP / Sentiment Analysis</span>
-        </div>
-      </div>
-      <div class="skill-group">
-        <h3>Web &amp; Full-Stack</h3>
-        <div class="chip-row">
-          <span class="chip">JavaScript</span>
-          <span class="chip">PHP</span>
-          <span class="chip">Three.js</span>
-          <span class="chip">RESTful APIs</span>
-          <span class="chip">HTML5 / CSS3</span>
-          <span class="chip">AJAX / jQuery</span>
-        </div>
-      </div>
-      <div class="skill-group">
-        <h3>Data &amp; Tools</h3>
-        <div class="chip-row">
-          <span class="chip">MySQL</span>
-          <span class="chip">Python</span>
-          <span class="chip">Java / C</span>
-          <span class="chip">Git / GitHub</span>
-          <span class="chip">Linux</span>
-          <span class="chip">AWS (Foundational)</span>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section id="experience">
-  <div class="wrap">
-    <div class="section-tag">Experience</div>
-    <h2 class="section-title">Where I've worked.</h2>
-    <div class="timeline">
-      <div class="tl-item">
-        <div class="tl-date">Jun 2025 –<br>Sep 2025</div>
-        <div>
-          <div class="tl-role">Software Developer Intern</div>
-          <div class="tl-org">Sukkur Beverages Pvt Ltd (PepsiCo Franchise)</div>
-          <ul>
-            <li>Led end-to-end development of internal web and Android applications, from requirements to full-stack implementation in Python and PHP.</li>
-            <li>Engineered relational database schemas in MySQL and maintained system reliability across live production workflows.</li>
-            <li>Integrated an AI chatbot using the Google Gemini API, automating internal query handling and cutting manual support overhead.</li>
-          </ul>
-          <span class="badge">Best Project — IT Dept.</span>
-        </div>
-      </div>
-      <div class="tl-item">
-        <div class="tl-date">Feb 2021 –<br>Sep 2022</div>
-        <div>
-          <div class="tl-role">Digital Marketing Intern</div>
-          <div class="tl-org">Daily Chemicals Pvt Ltd</div>
-          <ul>
-            <li>Administered structured data pipelines and produced performance reports that informed management decisions.</li>
-            <li>Built core professional skills in stakeholder communication and translating business needs into technical tasks.</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section id="projects">
-  <div class="wrap">
-    <div class="section-tag">Projects</div>
-    <h2 class="section-title">What I've built.</h2>
-    <div class="project-grid">
-
-      <div class="project-card">
-        <h3>Persona-Based AI Argumentation System</h3>
-        <p>An LLM pipeline using Microsoft Phi-2, applying structured prompt engineering grounded in Big Five personality archetypes to produce controlled, persona-consistent outputs. Includes an automated sentiment-scoring evaluation framework.</p>
-        <div class="tag-row">
-          <span class="tag">Hugging Face</span>
-          <span class="tag">PyTorch</span>
-          <span class="tag">Prompt Engineering</span>
-        </div>
-        <a href="https://github.com/shsaadu" class="project-link">View code →</a>
-      </div>
-
-      <div class="project-card">
-        <h3>3D Interactive Food Ordering System</h3>
-        <p>A full-stack browser-based 3D ordering platform — assets modelled in Blender, rendered with Three.js with dynamic lighting and camera controls, integrated with AJAX and synchronised audio.</p>
-        <div class="tag-row">
-          <span class="tag">Three.js</span>
-          <span class="tag">Blender</span>
-          <span class="tag">AJAX</span>
-        </div>
-        <a href="https://github.com/shsaadu" class="project-link">View code →</a>
-      </div>
-
-      <div class="project-card">
-        <h3>Full-Stack Inventory Management System</h3>
-        <p>A scalable PHP/MySQL web app covering product management, order tracking, promotions, and outlet reporting, with role-based authentication and an integrated AI support chatbot.</p>
-        <div class="tag-row">
-          <span class="tag">PHP</span>
-          <span class="tag">MySQL</span>
-          <span class="tag">CRUD</span>
-        </div>
-        <a href="https://github.com/shsaadu" class="project-link">View code →</a>
-      </div>
-
-      <div class="project-card">
-        <h3>Network Security &amp; Socket Programming</h3>
-        <p>Exposed HTTP credential vulnerabilities via Wireshark packet capture on a locally hosted Apache environment, plus a C socket program for DNS resolution and TCP diagnostics.</p>
-        <div class="tag-row">
-          <span class="tag">C</span>
-          <span class="tag">Wireshark</span>
-          <span class="tag">TCP/DNS</span>
-        </div>
-        <a href="https://github.com/shsaadu" class="project-link">View code →</a>
-      </div>
-
-      <div class="project-card upcoming">
-        <h3>+ Building next: an AI document Q&amp;A chatbot, and a Three.js product configurator.</h3>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<section id="contact">
-  <div class="wrap contact-inner">
-    <div class="section-tag">Contact</div>
-    <h2 class="section-title">Let's build something.</h2>
-    <p class="contact-lead">Looking for a chatbot, an AI-powered tool, or a full-stack web app? I'd like to hear about it.</p>
-    <div class="contact-links">
-      <a href="mailto:saad.mohammad3002@gmail.com" class="btn btn-primary">Email me →</a>
-      <a href="https://wa.me/447774021746" class="btn btn-ghost">WhatsApp</a>
-      <a href="https://www.linkedin.com/in/mohammad-saad9bab65391" class="btn btn-ghost">LinkedIn</a>
-      <a href="https://github.com/shsaadu" class="btn btn-ghost">GitHub</a>
-    </div>
-  </div>
-</section>
-
-<footer>Mohammad Saad · built with intent, not a template</footer>
-
-<script src="js/main.js" defer></script>
-
+    <script src="js/main.js"></script>
 </body>
 </html>

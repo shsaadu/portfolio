@@ -1,132 +1,171 @@
-const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+/**
+ * Personal Portfolio — Main Controller
+ * Frameworkless, Lightweight & Accessible
+ */
 
-  // Scroll reveal
-  document.querySelectorAll('section > .wrap').forEach(el => el.classList.add('reveal'));
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
-  }, { threshold: 0.12 });
-  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+document.addEventListener('DOMContentLoaded', () => {
+    initNavigation();
+    initScrollReveal();
+    initCursorGlow();
+    initHeroDemo();
+});
 
-  // Staggered child reveal for grids/lists
-  const staggerSelectors = ['.cred-card', '.chip', '.tl-item', '.project-card', '.about-block'];
-  staggerSelectors.forEach(sel => {
-    document.querySelectorAll(sel).forEach(el => el.classList.add('stagger-child'));
-  });
-  const staggerIO = new IntersectionObserver((entries) => {
-    entries.forEach(e => {
-      if(e.isIntersecting){
-        const siblings = Array.from(e.target.parentElement.children).filter(c => c.classList.contains('stagger-child'));
-        const idx = siblings.indexOf(e.target);
-        e.target.style.transitionDelay = (idx * 0.08) + 's';
-        e.target.classList.add('in');
-        staggerIO.unobserve(e.target);
-      }
-    });
-  }, { threshold: 0.15 });
-  document.querySelectorAll('.stagger-child').forEach(el => staggerIO.observe(el));
+/* ==========================================================================
+   1. Responsive Navigation & Mobile Menu
+   ========================================================================== */
+function initNavigation() {
+    const navToggle = document.getElementById('navToggle');
+    const navMenu = document.getElementById('navMenu');
+    const navLinks = document.querySelectorAll('.nav-link');
 
-  // Custom bubble cursor — fine-pointer devices, respects reduced motion
-  const isFinePointer = window.matchMedia('(pointer: fine)').matches;
-  if(isFinePointer && !reduced){
-    document.documentElement.classList.add('custom-cursor');
-    const bubble = document.createElement('div');
-    bubble.className = 'cursor-bubble';
-    const dot = document.createElement('div');
-    dot.className = 'cursor-dot';
-    document.body.appendChild(bubble);
-    document.body.appendChild(dot);
+    if (!navToggle || !navMenu) return;
 
-    let mouseX = 0, mouseY = 0, bubbleX = 0, bubbleY = 0;
-    window.addEventListener('mousemove', (e) => {
-      mouseX = e.clientX; mouseY = e.clientY;
-      dot.style.transform = `translate(${mouseX}px, ${mouseY}px) translate(-50%,-50%)`;
+    navToggle.addEventListener('click', () => {
+        const isExpanded = navToggle.getAttribute('aria-expanded') === 'true';
+        navToggle.setAttribute('aria-expanded', !isExpanded);
+        navMenu.classList.toggle('is-active');
     });
 
-    function animateBubble(){
-      bubbleX += (mouseX - bubbleX) * 0.16;
-      bubbleY += (mouseY - bubbleY) * 0.16;
-      bubble.style.transform = `translate(${bubbleX}px, ${bubbleY}px) translate(-50%,-50%)`;
-      requestAnimationFrame(animateBubble);
-    }
-    requestAnimationFrame(animateBubble);
-
-    document.querySelectorAll('a, button, .project-card').forEach(el => {
-      el.addEventListener('mouseenter', () => bubble.classList.add('hovering'));
-      el.addEventListener('mouseleave', () => bubble.classList.remove('hovering'));
+    // Close mobile menu on link navigation click
+    navLinks.forEach(link => {
+        link.addEventListener('click', () => {
+            if (navMenu.classList.contains('is-active')) {
+                navMenu.classList.remove('is-active');
+                navToggle.setAttribute('aria-expanded', 'false');
+            }
+        });
     });
+}
 
-    // Click spawns a small bubble that floats up and fades
-    window.addEventListener('click', (e) => {
-      const size = 14 + Math.random() * 18;
-      const pop = document.createElement('div');
-      pop.className = 'pop-bubble';
-      pop.style.width = size + 'px';
-      pop.style.height = size + 'px';
-      pop.style.left = e.clientX + 'px';
-      pop.style.top = e.clientY + 'px';
-      document.body.appendChild(pop);
-      setTimeout(() => pop.remove(), 1150);
-    });
-  }
+/* ==========================================================================
+   2. IntersectionObserver for Reveal Animations
+   ========================================================================== */
+function initScrollReveal() {
+    const revealElements = document.querySelectorAll('.reveal-element');
 
-  // Close mobile nav on link click
-  document.querySelectorAll('.nav-links a').forEach(a => a.addEventListener('click', () => {
-    document.querySelector('.nav-links').classList.remove('open');
-  }));
+    if ('IntersectionObserver' in window) {
+        const observerOptions = {
+            root: null,
+            threshold: 0.1,
+            rootMargin: '0px 0px -40px 0px'
+        };
 
-  // Signature hero chat demo
-  const script = [
-    { who:'user', text:'Can you build me a chatbot for my business?' },
-    { who:'bot', text:"Yes — trained on your docs, deployed in days." },
-    { who:'user', text:'What if I also need it on my website?' },
-    { who:'bot', text:'Same bot, embedded — API-integrated, no extra rebuild.' }
-  ];
-  const chatBody = document.getElementById('chatBody');
+        const observer = new IntersectionObserver((entries, obs) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                    obs.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
 
-  function renderAllStatic(){
-    script.forEach(m => {
-      const b = document.createElement('div');
-      b.className = 'bubble ' + (m.who === 'user' ? 'user' : 'bot');
-      b.textContent = m.text;
-      chatBody.appendChild(b);
-    });
-  }
-
-  function playScript(i = 0){
-    if(i >= script.length) return;
-    const m = script[i];
-    if(m.who === 'bot'){
-      const typing = document.createElement('div');
-      typing.className = 'typing';
-      typing.innerHTML = '<span></span><span></span><span></span>';
-      chatBody.appendChild(typing);
-      setTimeout(() => {
-        typing.remove();
-        const b = document.createElement('div');
-        b.className = 'bubble bot';
-        b.textContent = m.text;
-        chatBody.appendChild(b);
-        setTimeout(() => playScript(i+1), 700);
-      }, 900);
+        revealElements.forEach(el => observer.observe(el));
     } else {
-      const b = document.createElement('div');
-      b.className = 'bubble user';
-      b.textContent = m.text;
-      chatBody.appendChild(b);
-      setTimeout(() => playScript(i+1), 700);
+        // Fallback for legacy browsers
+        revealElements.forEach(el => el.classList.add('is-visible'));
     }
-  }
+}
 
-  if(reduced){
-    renderAllStatic();
-  } else {
-    const chatIO = new IntersectionObserver((entries) => {
-      entries.forEach(e => {
-        if(e.isIntersecting){
-          playScript(0);
-          chatIO.unobserve(e.target);
+/* ==========================================================================
+   3. Subtle Desktop Cursor Glow Tracking
+   ========================================================================== */
+function initCursorGlow() {
+    const cursorGlow = document.getElementById('cursorGlow');
+    
+    // Disable visual tracking if touch environment or reduced motion preferred
+    if (!cursorGlow || window.matchMedia('(prefers-reduced-motion: reduce)').matches || 'ontouchstart' in window) {
+        if (cursorGlow) cursorGlow.style.display = 'none';
+        return;
+    }
+
+    let mouseX = 0;
+    let mouseY = 0;
+    let currentX = 0;
+    let currentY = 0;
+
+    window.addEventListener('mousemove', (e) => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+    });
+
+    function animateGlow() {
+        currentX += (mouseX - currentX) * 0.1;
+        currentY += (mouseY - currentY) * 0.1;
+        cursorGlow.style.left = `${currentX}px`;
+        cursorGlow.style.top = `${currentY}px`;
+        requestAnimationFrame(animateGlow);
+    }
+
+    animateGlow();
+}
+
+/* ==========================================================================
+   4. Interactive Hero AI Mock Assistant Preview
+   ========================================================================== */
+function initHeroDemo() {
+    const sendBtn = document.getElementById('heroDemoSendBtn');
+    const demoBody = document.getElementById('heroDemoBody');
+    const demoInput = document.getElementById('heroDemoInput');
+
+    if (!sendBtn || !demoBody || !demoInput) return;
+
+    const demoSteps = [
+        {
+            user: "Selected Option: Enterprise Tier",
+            bot: "Excellent choice. I can schedule a scoping call or capture your preliminary functional requirements right now. What works best?"
+        },
+        {
+            user: "Let's capture requirements first.",
+            bot: "Understood. Please confirm your primary goal: 1) AI Website Lead Automation, or 2) Full-Stack Internal Software?"
         }
-      });
-    }, { threshold: 0.4 });
-    chatIO.observe(document.getElementById('chatCard'));
-  }
+    ];
+
+    let stepIndex = 0;
+
+    sendBtn.addEventListener('click', () => {
+        if (stepIndex >= demoSteps.length) {
+            // Reset demo
+            demoBody.innerHTML = `
+                <div class="chat-message bot">
+                    <div class="avatar">AI</div>
+                    <div class="message-content">
+                        Hello! I am your AI Assistant. How can I help with your service enquiries today?
+                    </div>
+                </div>
+            `;
+            demoInput.value = "Selected Option: Enterprise Tier";
+            stepIndex = 0;
+            return;
+        }
+
+        const currentStep = demoSteps[stepIndex];
+
+        // Append User Message
+        const userMsg = document.createElement('div');
+        userMsg.className = 'chat-message user';
+        userMsg.innerHTML = `<div class="message-content">${currentStep.user}</div>`;
+        demoBody.appendChild(userMsg);
+
+        // Auto-scroll demo body
+        demoBody.scrollTop = demoBody.scrollHeight;
+
+        // Simulate short delayed AI response
+        setTimeout(() => {
+            const botMsg = document.createElement('div');
+            botMsg.className = 'chat-message bot';
+            botMsg.innerHTML = `
+                <div class="avatar">AI</div>
+                <div class="message-content">${currentStep.bot}</div>
+            `;
+            demoBody.appendChild(botMsg);
+            demoBody.scrollTop = demoBody.scrollHeight;
+
+            stepIndex++;
+            if (stepIndex < demoSteps.length) {
+                demoInput.value = demoSteps[stepIndex].user;
+            } else {
+                demoInput.value = "Reset Demonstration";
+            }
+        }, 600);
+    });
+}
