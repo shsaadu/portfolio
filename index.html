@@ -323,22 +323,25 @@
                             <span class="project-category">AI & Business Automation</span>
                             <h3 class="featured-title">AI Lead Assistant for Service Businesses</h3>
                             <p class="featured-description">
-                                AI-powered website assistant designed to help service businesses engage visitors, answer questions, qualify high-intent leads, and capture enquiries through an interactive conversational experience.
+                                AI-powered website assistant that helps service businesses engage visitors, answer questions from their own documents, qualify high-intent leads, and capture enquiries — with instant email alerts on every new lead and an admin dashboard to manage conversations, leads, and the knowledge base.
                             </p>
-                            
+
                             <div class="feature-highlights">
-                                <div class="feat-item"><strong>Conversational AI:</strong> Context-aware assistant with quick replies and Gemini-powered responses.</div>
-                                <div class="feat-item"><strong>Lead Capture:</strong> Automatically surfaces enquiry forms when visitors show high purchase intent.</div>
-                                <div class="feat-item"><strong>Business Automation:</strong> Connects customer conversations with structured lead information to reduce manual enquiry handling.</div>
-                                <div class="feat-item"><strong>Responsive Experience:</strong> Designed as a reusable customer-facing web application for service businesses.</div>
+                                <div class="feat-item"><strong>Conversational AI:</strong> Context-aware assistant with quick replies and Gemini-powered responses, tuned to each business's tone and services.</div>
+                                <div class="feat-item"><strong>RAG Retrieval:</strong> Answers grounded in the business's own FAQs and documents via Postgres vector search (pgvector + Gemini embeddings), not prompt-stuffing.</div>
+                                <div class="feat-item"><strong>Lead Capture &amp; Database:</strong> Detects high-intent messages, surfaces an enquiry form, and stores structured leads, conversations, and messages in Supabase.</div>
+                                <div class="feat-item"><strong>Email Notifications:</strong> New leads are sent to the business instantly via Resend, as a best-effort step that never blocks lead capture.</div>
+                                <div class="feat-item"><strong>Admin Dashboard:</strong> Password-protected panel for leads with status tracking, full conversation history, knowledge-base management, and branding &amp; prompt settings.</div>
                             </div>
 
                             <div class="tech-stack-pills">
-                                <span>Python</span>
                                 <span>JavaScript</span>
+                                <span>Serverless Functions</span>
                                 <span>Gemini API</span>
+                                <span>Supabase / Postgres</span>
+                                <span>pgvector (RAG)</span>
+                                <span>Resend</span>
                                 <span>Vercel</span>
-                                <span>REST APIs</span>
                             </div>
 
                             <div class="project-links">
