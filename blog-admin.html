@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex">
+    <title>Blog admin — Mohammad Saad</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/blog.css">
+</head>
+<body>
+
+    <div class="bg-grid-pattern" aria-hidden="true"></div>
+
+    <div class="blog-admin-login" id="loginScreen">
+        <form class="blog-admin-card" id="loginForm">
+            <h2>Blog admin</h2>
+            <label>Password<input type="password" id="loginPassword" required autocomplete="current-password"></label>
+            <button class="btn btn-primary" type="submit" style="width:100%;">Sign in</button>
+            <p class="blog-admin-error" id="loginError"></p>
+        </form>
+    </div>
+
+    <div class="blog-admin-shell hidden" id="adminShell">
+        <h1>Blog drafts</h1>
+        <p>Review, edit, publish, or reject. Weekly drafts also arrive by email with quick approve/reject links — this page does the same thing, plus editing.</p>
+        <div id="draftList"><p>Loading…</p></div>
+    </div>
+
+    <script src="js/blog-admin.js"></script>
+</body>
+</html>
