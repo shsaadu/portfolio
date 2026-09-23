@@ -19,9 +19,12 @@ const {
 
 // Tried in order — if one model is overloaded or unavailable, the next is
 // used immediately rather than waiting on that specific model to recover.
-// gemini-flash-latest is Google's own alias for "whatever the current
-// recommended flash model is," so it's a safe last resort.
-const MODEL_CANDIDATES = ['gemini-3.5-flash', 'gemini-2.5-flash', 'gemini-2.0-flash', 'gemini-flash-latest'];
+// gemini-2.5-flash and gemini-2.0-flash are confirmed fully retired (the API
+// itself says so). Gemini's API error explicitly pointed us to 3.6-flash, so
+// that goes first; gemini-flash-latest is Google's alias for "whatever the
+// current recommended flash model is," kept as a safety net if 3.6 is ever
+// renamed again.
+const MODEL_CANDIDATES = ['gemini-3.6-flash', 'gemini-flash-latest', 'gemini-3.5-flash'];
 
 function requireEnv(name, value) {
   if (!value) {
