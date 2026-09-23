@@ -68,6 +68,28 @@ async function nextTopic() {
   return data;
 }
 
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+// Gemini occasionally returns a transient "high demand, try again later" error.
+// This runs unattended on a weekly cron with nobody watching, so retry a few
+// times with a backoff before giving up and failing the whole run.
+async function withRetries(fn, { attempts = 4, delaysMs = [5000, 20000, 60000] } = {}) {
+  let lastError;
+  for (let i = 0; i < attempts; i += 1) {
+    try {
+      return await fn();
+    } catch (err) {
+      lastError = err;
+      const isLast = i === attempts - 1;
+      console.warn(`Attempt ${i + 1}/${attempts} failed: ${err.message || err}`);
+      if (!isLast) await sleep(delaysMs[i] || delaysMs[delaysMs.length - 1]);
+    }
+  }
+  throw lastError;
+}
+
 async function generatePost(topic) {
   const systemInstruction = `You are writing a blog post for Mohammad Saad's personal portfolio site.
 He is a Full-Stack and AI/ML developer (BSc Computer Science with AI, University of Sussex) who builds
@@ -86,30 +108,32 @@ one or two sentences, under 200 characters, for a preview card), "content_html" 
 clean semantic HTML using <p>, <h2>, <h3>, <ul>/<li>, <strong> — no <html>/<head>/<body> wrapper, no inline
 styles, no markdown asterisks).`;
 
-  const res = await fetch(
-    `https://generativelanguage.googleapis.com/v1beta/models/${CHAT_MODEL}:generateContent`,
-    {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-goog-api-key': GEMINI_API_KEY },
-      body: JSON.stringify({
-        system_instruction: { parts: [{ text: systemInstruction }] },
-        contents: [{ role: 'user', parts: [{ text: `Write the post. Topic: ${topic}` }] }],
-        generationConfig: { temperature: 0.6, responseMimeType: 'application/json' },
-      }),
-    }
-  );
-  const data = await res.json();
-  if (!res.ok) throw new Error((data && data.error && data.error.message) || 'Gemini request failed');
+  return withRetries(async () => {
+    const res = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/${CHAT_MODEL}:generateContent`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'x-goog-api-key': GEMINI_API_KEY },
+        body: JSON.stringify({
+          system_instruction: { parts: [{ text: systemInstruction }] },
+          contents: [{ role: 'user', parts: [{ text: `Write the post. Topic: ${topic}` }] }],
+          generationConfig: { temperature: 0.6, responseMimeType: 'application/json' },
+        }),
+      }
+    );
+    const data = await res.json();
+    if (!res.ok) throw new Error((data && data.error && data.error.message) || 'Gemini request failed');
 
-  const text = (data.candidates?.[0]?.content?.parts || []).map((p) => p.text || '').join('');
-  let parsed;
-  try {
-    parsed = JSON.parse(text);
-  } catch {
-    throw new Error('Gemini did not return valid JSON: ' + text.slice(0, 300));
-  }
-  if (!parsed.title || !parsed.content_html) throw new Error('Gemini response missing title/content_html');
-  return parsed;
+    const text = (data.candidates?.[0]?.content?.parts || []).map((p) => p.text || '').join('');
+    let parsed;
+    try {
+      parsed = JSON.parse(text);
+    } catch {
+      throw new Error('Gemini did not return valid JSON: ' + text.slice(0, 300));
+    }
+    if (!parsed.title || !parsed.content_html) throw new Error('Gemini response missing title/content_html');
+    return parsed;
+  });
 }
 
 async function uniqueSlug(baseTitle) {
