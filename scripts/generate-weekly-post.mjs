@@ -17,7 +17,11 @@ const {
   SITE_URL,
 } = process.env;
 
-const CHAT_MODEL = 'gemini-3.5-flash';
+// Tried in order — if one model is overloaded or unavailable, the next is
+// used immediately rather than waiting on that specific model to recover.
+// gemini-flash-latest is Google's own alias for "whatever the current
+// recommended flash model is," so it's a safe last resort.
+const MODEL_CANDIDATES = ['gemini-3.5-flash', 'gemini-2.5-flash', 'gemini-2.0-flash', 'gemini-flash-latest'];
 
 function requireEnv(name, value) {
   if (!value) {
@@ -72,22 +76,31 @@ function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-// Gemini occasionally returns a transient "high demand, try again later" error.
-// This runs unattended on a weekly cron with nobody watching, so retry a few
-// times with a backoff before giving up and failing the whole run.
-async function withRetries(fn, { attempts = 4, delaysMs = [5000, 20000, 60000] } = {}) {
-  let lastError;
-  for (let i = 0; i < attempts; i += 1) {
-    try {
-      return await fn();
-    } catch (err) {
-      lastError = err;
-      const isLast = i === attempts - 1;
-      console.warn(`Attempt ${i + 1}/${attempts} failed: ${err.message || err}`);
-      if (!isLast) await sleep(delaysMs[i] || delaysMs[delaysMs.length - 1]);
+async function callGemini(model, systemInstruction, topic) {
+  const res = await fetch(
+    `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`,
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-goog-api-key': GEMINI_API_KEY },
+      body: JSON.stringify({
+        system_instruction: { parts: [{ text: systemInstruction }] },
+        contents: [{ role: 'user', parts: [{ text: `Write the post. Topic: ${topic}` }] }],
+        generationConfig: { temperature: 0.6, responseMimeType: 'application/json' },
+      }),
     }
+  );
+  const data = await res.json();
+  if (!res.ok) throw new Error((data && data.error && data.error.message) || `${model} request failed`);
+
+  const text = (data.candidates?.[0]?.content?.parts || []).map((p) => p.text || '').join('');
+  let parsed;
+  try {
+    parsed = JSON.parse(text);
+  } catch {
+    throw new Error(`${model} did not return valid JSON: ` + text.slice(0, 300));
   }
-  throw lastError;
+  if (!parsed.title || !parsed.content_html) throw new Error(`${model} response missing title/content_html`);
+  return parsed;
 }
 
 async function generatePost(topic) {
@@ -108,32 +121,29 @@ one or two sentences, under 200 characters, for a preview card), "content_html" 
 clean semantic HTML using <p>, <h2>, <h3>, <ul>/<li>, <strong> — no <html>/<head>/<body> wrapper, no inline
 styles, no markdown asterisks).`;
 
-  return withRetries(async () => {
-    const res = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/${CHAT_MODEL}:generateContent`,
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'x-goog-api-key': GEMINI_API_KEY },
-        body: JSON.stringify({
-          system_instruction: { parts: [{ text: systemInstruction }] },
-          contents: [{ role: 'user', parts: [{ text: `Write the post. Topic: ${topic}` }] }],
-          generationConfig: { temperature: 0.6, responseMimeType: 'application/json' },
-        }),
-      }
-    );
-    const data = await res.json();
-    if (!res.ok) throw new Error((data && data.error && data.error.message) || 'Gemini request failed');
+  // Two passes over the whole model list, with a short wait between passes.
+  // Most "high demand" blips clear in under a minute; trying every model
+  // immediately (rather than backing off on one model repeatedly) gets an
+  // answer fast if it's just one model that's overloaded right now.
+  const passDelaysMs = [0, 30000];
+  let lastError;
 
-    const text = (data.candidates?.[0]?.content?.parts || []).map((p) => p.text || '').join('');
-    let parsed;
-    try {
-      parsed = JSON.parse(text);
-    } catch {
-      throw new Error('Gemini did not return valid JSON: ' + text.slice(0, 300));
+  for (const delay of passDelaysMs) {
+    if (delay) {
+      console.warn(`All models failed this pass — waiting ${delay / 1000}s before trying again.`);
+      await sleep(delay);
     }
-    if (!parsed.title || !parsed.content_html) throw new Error('Gemini response missing title/content_html');
-    return parsed;
-  });
+    for (const model of MODEL_CANDIDATES) {
+      try {
+        console.log(`Trying ${model}…`);
+        return await callGemini(model, systemInstruction, topic);
+      } catch (err) {
+        lastError = err;
+        console.warn(`${model} failed: ${err.message || err}`);
+      }
+    }
+  }
+  throw lastError;
 }
 
 async function uniqueSlug(baseTitle) {
