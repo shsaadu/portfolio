@@ -1,7 +1,7 @@
 /**
  * Portfolio — interactions.
  * Scroll reveals, counters, glass header + progress bar, the timeline "road",
- * cursor-follow card glow, and the self-playing hero chat.
+ * and cursor-follow card glow.
  * No libraries. Everything degrades to a static page without JavaScript, and
  * visitors who ask for reduced motion get the content without the movement.
  */
@@ -17,7 +17,6 @@
     initCounters();
     initScrollEffects();
     initCardGlow();
-    initHeroDemo();
   });
 
   /* ---- Navigation + mobile menu ---- */
@@ -138,87 +137,6 @@
         hero.style.setProperty('--mx', ((e.clientX - r.left) / r.width * 100).toFixed(1) + '%');
         hero.style.setProperty('--my', ((e.clientY - r.top) / r.height * 100).toFixed(1) + '%');
       });
-    }
-  }
-
-  /* ---- Self-playing hero chat: a multilingual enquiry becomes a lead ---- */
-  function initHeroDemo() {
-    var body = document.getElementById('heroDemoBody');
-    var input = document.getElementById('heroDemoInput');
-    if (!body) return;
-
-    var script = [
-      { who: 'bot', text: 'Hi! I’m the assistant for this language school. How can I help?' },
-      { who: 'user', text: 'Hola, ¿ofrecen preparación para el IELTS?' },
-      { who: 'bot', text: '¡Sí! Tenemos cursos de preparación para el IELTS. ¿Quieres que tome tus datos para que el equipo te envíe fechas y precios?' },
-      { who: 'lead', tag: 'Lead captured', text: 'IELTS preparation · replied in Spanish · <strong>ready to act</strong>' }
-    ];
-
-    var timers = [];
-    function later(fn, ms) { timers.push(setTimeout(fn, ms)); }
-    function scroll() { body.scrollTop = body.scrollHeight; }
-
-    function addMessage(step) {
-      var el = document.createElement('div');
-      if (step.who === 'lead') {
-        el.className = 'lead-pop';
-        el.innerHTML = '<span class="tag">' + step.tag + '</span>' + step.text;
-      } else {
-        el.className = 'chat-message ' + step.who;
-        el.innerHTML = (step.who === 'bot' ? '<div class="avatar">AI</div>' : '') + '<div class="message-content"></div>';
-        el.querySelector('.message-content').textContent = step.text;
-      }
-      body.appendChild(el);
-      scroll();
-      return el;
-    }
-
-    function typing() {
-      var el = document.createElement('div');
-      el.className = 'chat-message bot';
-      el.innerHTML = '<div class="avatar">AI</div><div class="message-content"><span class="typing"><i></i><i></i><i></i></span></div>';
-      body.appendChild(el);
-      scroll();
-      return el;
-    }
-
-    function play() {
-      body.innerHTML = '';
-      if (input) input.value = '';
-      var t = 600;
-      script.forEach(function (step) {
-        if (step.who === 'bot') {
-          later(function () { var dots = typing(); later(function () { dots.remove(); addMessage(step); }, 900); }, t);
-          t += 2000;
-        } else if (step.who === 'user') {
-          later(function () { if (input) input.value = step.text; }, t);
-          t += 1100;
-          later(function () { if (input) input.value = ''; addMessage(step); }, t);
-          t += 700;
-        } else {
-          later(function () { addMessage(step); }, t);
-          t += 900;
-        }
-      });
-      later(play, t + 5000); // loop
-    }
-
-    if (reduceMotion) {
-      body.innerHTML = '';
-      script.forEach(addMessage);
-      return;
-    }
-    // Only run while the hero is on screen.
-    if ('IntersectionObserver' in window) {
-      var started = false;
-      new IntersectionObserver(function (entries) {
-        entries.forEach(function (entry) {
-          if (entry.isIntersecting && !started) { started = true; play(); }
-          if (!entry.isIntersecting && started) { started = false; timers.forEach(clearTimeout); timers = []; }
-        });
-      }, { threshold: 0.2 }).observe(body);
-    } else {
-      play();
     }
   }
 })();
