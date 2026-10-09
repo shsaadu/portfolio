@@ -1,171 +1,224 @@
 /**
- * Personal Portfolio — Main Controller
- * Frameworkless, Lightweight & Accessible
+ * Portfolio — interactions.
+ * Scroll reveals, counters, glass header + progress bar, the timeline "road",
+ * cursor-follow card glow, and the self-playing hero chat.
+ * No libraries. Everything degrades to a static page without JavaScript, and
+ * visitors who ask for reduced motion get the content without the movement.
  */
+(function () {
+  'use strict';
 
-document.addEventListener('DOMContentLoaded', () => {
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var finePointer = window.matchMedia('(pointer: fine)').matches;
+
+  document.addEventListener('DOMContentLoaded', function () {
     initNavigation();
-    initScrollReveal();
-    initCursorGlow();
+    initReveal();
+    initCounters();
+    initScrollEffects();
+    initCardGlow();
     initHeroDemo();
-});
+  });
 
-/* ==========================================================================
-   1. Responsive Navigation & Mobile Menu
-   ========================================================================== */
-function initNavigation() {
-    const navToggle = document.getElementById('navToggle');
-    const navMenu = document.getElementById('navMenu');
-    const navLinks = document.querySelectorAll('.nav-link');
+  /* ---- Navigation + mobile menu ---- */
+  function initNavigation() {
+    var toggle = document.getElementById('navToggle');
+    var menu = document.getElementById('navMenu');
+    if (!toggle || !menu) return;
 
-    if (!navToggle || !navMenu) return;
-
-    navToggle.addEventListener('click', () => {
-        const isExpanded = navToggle.getAttribute('aria-expanded') === 'true';
-        navToggle.setAttribute('aria-expanded', !isExpanded);
-        navMenu.classList.toggle('is-active');
+    toggle.addEventListener('click', function () {
+      var open = toggle.getAttribute('aria-expanded') === 'true';
+      toggle.setAttribute('aria-expanded', String(!open));
+      menu.classList.toggle('is-active');
     });
+    document.querySelectorAll('.nav-link').forEach(function (link) {
+      link.addEventListener('click', function () {
+        menu.classList.remove('is-active');
+        toggle.setAttribute('aria-expanded', 'false');
+      });
+    });
+  }
 
-    // Close mobile menu on link navigation click
-    navLinks.forEach(link => {
-        link.addEventListener('click', () => {
-            if (navMenu.classList.contains('is-active')) {
-                navMenu.classList.remove('is-active');
-                navToggle.setAttribute('aria-expanded', 'false');
-            }
+  /* ---- Scroll reveals (.reveal-element and [data-reveal]) ---- */
+  function initReveal() {
+    var items = document.querySelectorAll('.reveal-element, [data-reveal]');
+    function show(el) { el.classList.add('is-visible', 'in'); }
+
+    if ('IntersectionObserver' in window && !reduceMotion) {
+      var observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            show(entry.target);
+            observer.unobserve(entry.target);
+          }
         });
-    });
-}
-
-/* ==========================================================================
-   2. IntersectionObserver for Reveal Animations
-   ========================================================================== */
-function initScrollReveal() {
-    const revealElements = document.querySelectorAll('.reveal-element');
-
-    if ('IntersectionObserver' in window) {
-        const observerOptions = {
-            root: null,
-            threshold: 0.1,
-            rootMargin: '0px 0px -40px 0px'
-        };
-
-        const observer = new IntersectionObserver((entries, obs) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('is-visible');
-                    obs.unobserve(entry.target);
-                }
-            });
-        }, observerOptions);
-
-        revealElements.forEach(el => observer.observe(el));
+      }, { threshold: 0.05, rootMargin: '0px 0px -6% 0px' });
+      items.forEach(function (el) { observer.observe(el); });
     } else {
-        // Fallback for legacy browsers
-        revealElements.forEach(el => el.classList.add('is-visible'));
+      items.forEach(show);
     }
-}
+  }
 
-/* ==========================================================================
-   3. Subtle Desktop Cursor Glow Tracking
-   ========================================================================== */
-function initCursorGlow() {
-    const cursorGlow = document.getElementById('cursorGlow');
-    
-    // Disable visual tracking if touch environment or reduced motion preferred
-    if (!cursorGlow || window.matchMedia('(prefers-reduced-motion: reduce)').matches || 'ontouchstart' in window) {
-        if (cursorGlow) cursorGlow.style.display = 'none';
-        return;
+  /* ---- Counters ---- */
+  function initCounters() {
+    var counters = document.querySelectorAll('[data-count]');
+    if (!counters.length) return;
+
+    function countUp(el) {
+      var target = parseInt(el.getAttribute('data-count'), 10);
+      if (reduceMotion || !target) return;
+      var start = null;
+      var duration = 1400;
+      function frame(time) {
+        if (!start) start = time;
+        var t = Math.min((time - start) / duration, 1);
+        el.textContent = Math.round(target * (1 - Math.pow(1 - t, 3)));
+        if (t < 1) requestAnimationFrame(frame);
+      }
+      el.textContent = '0';
+      requestAnimationFrame(frame);
     }
+    if ('IntersectionObserver' in window) {
+      var observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            countUp(entry.target);
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.6 });
+      counters.forEach(function (el) { observer.observe(el); });
+    }
+  }
 
-    let mouseX = 0;
-    let mouseY = 0;
-    let currentX = 0;
-    let currentY = 0;
+  /* ---- Scroll-driven: progress bar, header state, timeline road ---- */
+  function initScrollEffects() {
+    var header = document.querySelector('.header');
+    var timeline = document.querySelector('.timeline');
+    var progress = document.createElement('div');
+    progress.className = 'progress';
+    progress.setAttribute('aria-hidden', 'true');
+    document.body.appendChild(progress);
 
-    window.addEventListener('mousemove', (e) => {
-        mouseX = e.clientX;
-        mouseY = e.clientY;
+    var ticking = false;
+    function update() {
+      ticking = false;
+      var y = window.scrollY;
+      var max = document.documentElement.scrollHeight - window.innerHeight;
+      progress.style.setProperty('--p', max > 0 ? Math.min(y / max, 1).toFixed(4) : 0);
+      if (header) header.classList.toggle('scrolled', y > 24);
+      if (timeline) {
+        var rect = timeline.getBoundingClientRect();
+        var p = (window.innerHeight * 0.6 - rect.top) / rect.height;
+        timeline.style.setProperty('--tl', Math.max(0, Math.min(p, 1)).toFixed(3));
+      }
+    }
+    window.addEventListener('scroll', function () {
+      if (!ticking) { ticking = true; requestAnimationFrame(update); }
+    }, { passive: true });
+    window.addEventListener('resize', update);
+    update();
+  }
+
+  /* ---- Cursor-follow spotlight on cards, and in the hero ---- */
+  function initCardGlow() {
+    if (!finePointer || reduceMotion) return;
+    var cards = document.querySelectorAll('.highlight-card, .service-card, .timeline-content, .featured-project-card, .project-card, .skill-category-card, .contact-method-card');
+    cards.forEach(function (card) {
+      card.addEventListener('pointermove', function (e) {
+        var r = card.getBoundingClientRect();
+        card.style.setProperty('--cx', (e.clientX - r.left) + 'px');
+        card.style.setProperty('--cy', (e.clientY - r.top) + 'px');
+      });
     });
-
-    function animateGlow() {
-        currentX += (mouseX - currentX) * 0.1;
-        currentY += (mouseY - currentY) * 0.1;
-        cursorGlow.style.left = `${currentX}px`;
-        cursorGlow.style.top = `${currentY}px`;
-        requestAnimationFrame(animateGlow);
+    var hero = document.querySelector('.hero-section');
+    if (hero) {
+      hero.addEventListener('pointermove', function (e) {
+        var r = hero.getBoundingClientRect();
+        hero.style.setProperty('--mx', ((e.clientX - r.left) / r.width * 100).toFixed(1) + '%');
+        hero.style.setProperty('--my', ((e.clientY - r.top) / r.height * 100).toFixed(1) + '%');
+      });
     }
+  }
 
-    animateGlow();
-}
+  /* ---- Self-playing hero chat: a multilingual enquiry becomes a lead ---- */
+  function initHeroDemo() {
+    var body = document.getElementById('heroDemoBody');
+    var input = document.getElementById('heroDemoInput');
+    if (!body) return;
 
-/* ==========================================================================
-   4. Interactive Hero AI Mock Assistant Preview
-   ========================================================================== */
-function initHeroDemo() {
-    const sendBtn = document.getElementById('heroDemoSendBtn');
-    const demoBody = document.getElementById('heroDemoBody');
-    const demoInput = document.getElementById('heroDemoInput');
-
-    if (!sendBtn || !demoBody || !demoInput) return;
-
-    const demoSteps = [
-        {
-            user: "Selected Option: Enterprise Tier",
-            bot: "Excellent choice. I can schedule a scoping call or capture your preliminary functional requirements right now. What works best?"
-        },
-        {
-            user: "Let's capture requirements first.",
-            bot: "Understood. Please confirm your primary goal: 1) AI Website Lead Automation, or 2) Full-Stack Internal Software?"
-        }
+    var script = [
+      { who: 'bot', text: 'Hi! I’m the assistant for this language school. How can I help?' },
+      { who: 'user', text: 'Hola, ¿ofrecen preparación para el IELTS?' },
+      { who: 'bot', text: '¡Sí! Tenemos cursos de preparación para el IELTS. ¿Quieres que tome tus datos para que el equipo te envíe fechas y precios?' },
+      { who: 'lead', tag: 'Lead captured', text: 'IELTS preparation · replied in Spanish · <strong>ready to act</strong>' }
     ];
 
-    let stepIndex = 0;
+    var timers = [];
+    function later(fn, ms) { timers.push(setTimeout(fn, ms)); }
+    function scroll() { body.scrollTop = body.scrollHeight; }
 
-    sendBtn.addEventListener('click', () => {
-        if (stepIndex >= demoSteps.length) {
-            // Reset demo
-            demoBody.innerHTML = `
-                <div class="chat-message bot">
-                    <div class="avatar">AI</div>
-                    <div class="message-content">
-                        Hello! I am your AI Assistant. How can I help with your service enquiries today?
-                    </div>
-                </div>
-            `;
-            demoInput.value = "Selected Option: Enterprise Tier";
-            stepIndex = 0;
-            return;
+    function addMessage(step) {
+      var el = document.createElement('div');
+      if (step.who === 'lead') {
+        el.className = 'lead-pop';
+        el.innerHTML = '<span class="tag">' + step.tag + '</span>' + step.text;
+      } else {
+        el.className = 'chat-message ' + step.who;
+        el.innerHTML = (step.who === 'bot' ? '<div class="avatar">AI</div>' : '') + '<div class="message-content"></div>';
+        el.querySelector('.message-content').textContent = step.text;
+      }
+      body.appendChild(el);
+      scroll();
+      return el;
+    }
+
+    function typing() {
+      var el = document.createElement('div');
+      el.className = 'chat-message bot';
+      el.innerHTML = '<div class="avatar">AI</div><div class="message-content"><span class="typing"><i></i><i></i><i></i></span></div>';
+      body.appendChild(el);
+      scroll();
+      return el;
+    }
+
+    function play() {
+      body.innerHTML = '';
+      if (input) input.value = '';
+      var t = 600;
+      script.forEach(function (step) {
+        if (step.who === 'bot') {
+          later(function () { var dots = typing(); later(function () { dots.remove(); addMessage(step); }, 900); }, t);
+          t += 2000;
+        } else if (step.who === 'user') {
+          later(function () { if (input) input.value = step.text; }, t);
+          t += 1100;
+          later(function () { if (input) input.value = ''; addMessage(step); }, t);
+          t += 700;
+        } else {
+          later(function () { addMessage(step); }, t);
+          t += 900;
         }
+      });
+      later(play, t + 5000); // loop
+    }
 
-        const currentStep = demoSteps[stepIndex];
-
-        // Append User Message
-        const userMsg = document.createElement('div');
-        userMsg.className = 'chat-message user';
-        userMsg.innerHTML = `<div class="message-content">${currentStep.user}</div>`;
-        demoBody.appendChild(userMsg);
-
-        // Auto-scroll demo body
-        demoBody.scrollTop = demoBody.scrollHeight;
-
-        // Simulate short delayed AI response
-        setTimeout(() => {
-            const botMsg = document.createElement('div');
-            botMsg.className = 'chat-message bot';
-            botMsg.innerHTML = `
-                <div class="avatar">AI</div>
-                <div class="message-content">${currentStep.bot}</div>
-            `;
-            demoBody.appendChild(botMsg);
-            demoBody.scrollTop = demoBody.scrollHeight;
-
-            stepIndex++;
-            if (stepIndex < demoSteps.length) {
-                demoInput.value = demoSteps[stepIndex].user;
-            } else {
-                demoInput.value = "Reset Demonstration";
-            }
-        }, 600);
-    });
-}
+    if (reduceMotion) {
+      body.innerHTML = '';
+      script.forEach(addMessage);
+      return;
+    }
+    // Only run while the hero is on screen.
+    if ('IntersectionObserver' in window) {
+      var started = false;
+      new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting && !started) { started = true; play(); }
+          if (!entry.isIntersecting && started) { started = false; timers.forEach(clearTimeout); timers = []; }
+        });
+      }, { threshold: 0.2 }).observe(body);
+    } else {
+      play();
+    }
+  }
+})();
